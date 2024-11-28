@@ -104,9 +104,10 @@ namespace News_Task.API.Controllers
 
 
         [HttpPost]
-        public IActionResult AddNews([FromForm] NewsDTO newsDTO)
+        public IActionResult AddNews([FromBody] NewsDTO newsDTO)
         {
-
+            if (newsDTO == null)
+                return BadRequest("News data cannot be null.");
 
             var news = new New
             {
