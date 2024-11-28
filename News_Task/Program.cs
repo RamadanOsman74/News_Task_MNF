@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using News.Domain.Repositories;
 using News.Infrastructure.Data;
@@ -18,7 +20,7 @@ builder.Services.AddDbContext<NewsDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
 });
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork >();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<INewsRepository, NewRepositories>();
 
 builder.Services.AddControllers()
@@ -27,7 +29,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
     });
 
-
 builder.Services.AddControllers()
         .AddJsonOptions(options =>
         {
@@ -35,6 +36,14 @@ builder.Services.AddControllers()
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
 
+#region Register FluentValidation
+// Add FluentValidation for automatic validation
+builder.Services.AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
+
+// Register validators in the assembly
+builder.Services.AddValidatorsFromAssemblyContaining<NewsDTOValidator>();
+#endregion
 
 var app = builder.Build();
 
