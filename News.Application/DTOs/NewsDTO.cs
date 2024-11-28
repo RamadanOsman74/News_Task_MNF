@@ -1,11 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using News.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace News.Application.DTOs
 {
@@ -16,7 +9,7 @@ namespace News.Application.DTOs
         public List<IFormFile> Image { get; set; }
         public bool IsFeatured { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
-       
+
 
         public string Language1 { get; set; }
         public string Translation1Title { get; set; }

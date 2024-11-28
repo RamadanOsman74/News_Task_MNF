@@ -106,13 +106,7 @@ namespace News_Task.API.Controllers
         [HttpPost]
         public IActionResult AddNews([FromForm] NewsDTO newsDTO)
         {
-            #region Validation
-            if (newsDTO == null)
-                return BadRequest("News data cannot be null.");
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            #endregion
 
             var news = new New
             {
@@ -124,7 +118,7 @@ namespace News_Task.API.Controllers
                 Translations = new List<NewTranslation>()
             };
 
-            #region Image Handling
+
             var rootPath = Directory.GetCurrentDirectory();
             var uploadPath = Path.Combine(rootPath, "Uploads");
             if (!Directory.Exists(uploadPath))
@@ -147,9 +141,9 @@ namespace News_Task.API.Controllers
                     news.Image.Add(new Images { ImagePath = filePath });
                 }
             }
-            #endregion
 
-            #region Translations Handling
+
+
             news.Translations.Add(new NewTranslation
             {
                 Language1 = newsDTO.Language1,
@@ -159,9 +153,9 @@ namespace News_Task.API.Controllers
                 Language2Title = newsDTO.Translation2Title,
                 Language2Content = newsDTO.Translation2Content
             });
-            #endregion
 
-            #region Database Operation
+
+
             try
             {
                 _unitOfWork.News.Add(news);
@@ -171,7 +165,7 @@ namespace News_Task.API.Controllers
             {
                 return StatusCode(500, $"Error saving news to the database: {ex.Message}");
             }
-            #endregion
+
 
             return CreatedAtAction(nameof(GetNewsById), new { id = news.NewId }, news);
         }

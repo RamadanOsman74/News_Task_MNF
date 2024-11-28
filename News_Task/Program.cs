@@ -1,14 +1,12 @@
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using News.Domain.Repositories;
 using News.Infrastructure.Data;
 using News.Infrastructure.Implementation;
 using System.Text.Json.Serialization;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,14 +34,6 @@ builder.Services.AddControllers()
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
 
-#region Register FluentValidation
-// Add FluentValidation for automatic validation
-builder.Services.AddFluentValidationAutoValidation()
-                .AddFluentValidationClientsideAdapters();
-
-// Register validators in the assembly
-builder.Services.AddValidatorsFromAssemblyContaining<NewsDTOValidator>();
-#endregion
 
 var app = builder.Build();
 
